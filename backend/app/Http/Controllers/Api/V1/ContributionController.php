@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreContributionRequest;
 use App\Http\Requests\SubmitContributionRequest;
 use App\Models\Contribution;
+use App\Http\Requests\PublishContributionRequest;
+use App\Services\PublishContribution;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -57,5 +59,10 @@ class ContributionController extends Controller
         abort_unless($contribution->author_id === $request->user()->id && $contribution->status === 'draft', 403);
         $contribution->update(['status' => 'submitted', 'submitted_at' => now()]);
         return response()->json($contribution->fresh());
+    }
+
+    public function publish(PublishContributionRequest $request, Contribution $contribution, PublishContribution $publisher): JsonResponse
+    {
+        return response()->json($publisher->execute($contribution, $request->user()->id));
     }
 }

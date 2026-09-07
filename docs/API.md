@@ -15,8 +15,11 @@ POST /languages                 authenticated
 POST /dialects                  authenticated
 GET  /contributions
 GET  /contributions/{contribution}
+POST /contributions/{contribution}/publish  entry.publish permission
 POST /contributions              contribution.create permission
 POST /contributions/{id}/submit  contribution.submit permission
+GET  /sources
+POST /sources                    contribution.create permission
 ```
 
 Collection endpoints use Laravel pagination. Write endpoints validate input through Form Requests and use Sanctum authentication where indicated.
