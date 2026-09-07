@@ -27,6 +27,9 @@ GET  /me/progress                 authenticated
 POST /me/progress                 authenticated
 POST /analytics/events
 GET  /me/reputation               authenticated
+GET  /search?q={term}
+GET  /moderation/reports          moderation.manage permission
+POST /moderation/reports/{id}/resolve
 ```
 
 Collection endpoints use Laravel pagination. Write endpoints validate input through Form Requests and use Sanctum authentication where indicated.
