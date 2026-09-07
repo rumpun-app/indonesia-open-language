@@ -1,0 +1,8 @@
+{
+  "name": "@iol/language-schema",
+  "version": "0.1.0",
+  "description": "Versioned manifest schema for Indonesia Open Language language packages",
+  "license": "AGPL-3.0-only",
+  "type": "module",
+  "exports": { ".": "./src/index.js", "./language-package.schema.json": "./language-package.schema.json" }
+}

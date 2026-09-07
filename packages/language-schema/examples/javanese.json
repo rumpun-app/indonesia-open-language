@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0",
+  "slug": "javanese",
+  "name": "Javanese",
+  "native_name": "Basa Jawa",
+  "iso_code": "jv",
+  "license": "AGPL-3.0-only",
+  "description": "Community-maintained Javanese language package.",
+  "vocabulary": "data/vocabulary.jsonl",
+  "phrases": "data/phrases.jsonl",
+  "grammar": "data/grammar.jsonl",
+  "lessons": "data/lessons.jsonl",
+  "scripts": "data/scripts.json",
+  "audio": "data/audio-manifest.jsonl"
+}

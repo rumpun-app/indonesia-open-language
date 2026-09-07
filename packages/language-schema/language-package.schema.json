@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://indonesia-open-language.org/schemas/language-package.v1.json",
+  "title": "Indonesia Open Language package",
+  "type": "object",
+  "required": ["schema_version", "slug", "name", "native_name", "license"],
+  "properties": {
+    "schema_version": { "const": "1.0" },
+    "slug": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+    "name": { "type": "string", "minLength": 1 },
+    "native_name": { "type": "string", "minLength": 1 },
+    "iso_code": { "type": "string" },
+    "license": { "type": "string", "minLength": 1 },
+    "description": { "type": "string" },
+    "vocabulary": { "type": "string" },
+    "phrases": { "type": "string" },
+    "grammar": { "type": "string" },
+    "lessons": { "type": "string" },
+    "scripts": { "type": "string" },
+    "audio": { "type": "string" }
+  },
+  "additionalProperties": false
+}
