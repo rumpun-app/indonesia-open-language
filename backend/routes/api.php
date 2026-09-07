@@ -12,6 +12,7 @@ use App\Http\Controllers\Api\V1\DictionaryController;
 use App\Http\Controllers\Api\V1\SourceController;
 use App\Http\Controllers\Api\V1\AudioController;
 use App\Http\Controllers\Api\V1\CommunityController;
+use App\Http\Controllers\Api\V1\LearningController;
 
 Route::prefix('v1')->group(function () {
     Route::apiResource('languages', LanguageController::class)->only(['index', 'show']);
@@ -23,6 +24,7 @@ Route::prefix('v1')->group(function () {
     Route::get('community/posts', [CommunityController::class, 'posts']);
     Route::get('reviews', [ReviewController::class, 'index']);
     Route::get('courses', [CourseController::class, 'index']);
+    Route::get('courses/{course}', [LearningController::class, 'show']);
     Route::get('dictionary', [DictionaryController::class, 'index']);
     Route::get('dictionary/{lexicalEntry}', [DictionaryController::class, 'show']);
     Route::get('exports/languages', ExportController::class);
@@ -40,5 +42,7 @@ Route::prefix('v1')->group(function () {
         Route::post('community/posts', [CommunityController::class, 'storePost']);
         Route::post('community/posts/{post}/comments', [CommunityController::class, 'comment']);
         Route::post('community/reports', [CommunityController::class, 'report']);
+        Route::get('me/progress', [LearningController::class, 'myProgress']);
+        Route::post('me/progress', [LearningController::class, 'progress']);
     });
 });
