@@ -8,6 +8,9 @@ Current endpoints:
 GET  /languages
 GET  /languages/{language}
 GET  /languages/{language}/dialects
+GET  /dictionary?q={term}&language_id={id}
+GET  /dictionary/{lexicalEntry}
+POST /dictionary                 contribution.create permission
 POST /languages                 authenticated
 POST /dialects                  authenticated
 GET  /contributions

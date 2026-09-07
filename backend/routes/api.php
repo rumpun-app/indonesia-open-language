@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\V1\ReviewController;
 use App\Http\Controllers\Api\V1\CourseController;
 use App\Http\Controllers\Api\V1\ExportController;
 use App\Http\Controllers\Api\V1\AiController;
+use App\Http\Controllers\Api\V1\DictionaryController;
 
 Route::prefix('v1')->group(function () {
     Route::apiResource('languages', LanguageController::class)->only(['index', 'show']);
@@ -16,6 +17,8 @@ Route::prefix('v1')->group(function () {
     Route::get('contributions/{contribution}', [ContributionController::class, 'show']);
     Route::get('reviews', [ReviewController::class, 'index']);
     Route::get('courses', [CourseController::class, 'index']);
+    Route::get('dictionary', [DictionaryController::class, 'index']);
+    Route::get('dictionary/{lexicalEntry}', [DictionaryController::class, 'show']);
     Route::get('exports/languages', ExportController::class);
     Route::post('ai/query', AiController::class);
     Route::middleware('auth:sanctum')->group(function () {
@@ -24,5 +27,6 @@ Route::prefix('v1')->group(function () {
         Route::post('contributions', [ContributionController::class, 'store']);
         Route::post('contributions/{contribution}/submit', [ContributionController::class, 'submit']);
         Route::post('reviews', [ReviewController::class, 'store']);
+        Route::post('dictionary', [DictionaryController::class, 'store']);
     });
 });
