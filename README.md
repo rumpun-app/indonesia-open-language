@@ -1,5 +1,9 @@
 # Indonesia Open Language
 
+Licensed under the GNU Affero General Public License v3.0-only. See [LICENSE](LICENSE).
+
+Any distributed modified version, including software offered to users over a network, must provide the corresponding source code under the same license. Contributions and hosted deployments must preserve this freedom; no proprietary closed derivative is permitted.
+
 Open-source language infrastructure for documenting, validating, learning, and safely reusing Indonesian regional languages.
 
 ## Current status
