@@ -1,0 +1,101 @@
+openapi: 3.1.0
+info:
+  title: Indonesia Open Language API
+  version: 1.0.0
+  description: Versioned API for open, provenance-aware Indonesian language infrastructure.
+  license:
+    name: AGPL-3.0-only
+    identifier: AGPL-3.0-only
+servers:
+  - url: /api/v1
+security:
+  - sanctum: []
+paths:
+  /languages:
+    get:
+      security: []
+      summary: List published languages
+      responses:
+        '200': { description: Paginated language collection }
+    post:
+      summary: Create a language draft
+      responses:
+        '201': { description: Created }
+  /languages/{language}/statistics:
+    get:
+      security: []
+      parameters: [{ $ref: '#/components/parameters/LanguageId' }]
+      responses: { '200': { description: Language statistics } }
+  /dictionary:
+    get:
+      security: []
+      parameters:
+        - { name: q, in: query, schema: { type: string } }
+        - { name: language_id, in: query, schema: { type: string } }
+      responses: { '200': { description: Paginated lexical entries } }
+    post:
+      summary: Create a structured lexical entry draft
+      responses: { '201': { description: Created } }
+  /contributions:
+    get:
+      security: []
+      responses: { '200': { description: Contribution collection } }
+    post:
+      summary: Create a contribution
+      responses: { '201': { description: Created } }
+  /contributions/{contribution}/submit:
+    post:
+      summary: Submit a draft contribution
+      parameters: [{ $ref: '#/components/parameters/ContributionId' }]
+      responses: { '200': { description: Submitted } }
+  /contributions/{contribution}/publish:
+    post:
+      summary: Publish a verified contribution
+      parameters: [{ $ref: '#/components/parameters/ContributionId' }]
+      responses: { '200': { description: Published with immutable version } }
+  /reviews:
+    post:
+      summary: Review a contribution
+      responses: { '201': { description: Review recorded } }
+  /audio:
+    get:
+      security: []
+      responses: { '200': { description: Audio recording collection } }
+    post:
+      summary: Upload consented audio
+      responses: { '201': { description: Processing started } }
+  /courses:
+    get:
+      security: []
+      responses: { '200': { description: Published course collection } }
+  /me/progress:
+    get:
+      responses: { '200': { description: User learning progress } }
+    post:
+      responses: { '200': { description: Progress recorded } }
+  /search:
+    get:
+      security: []
+      parameters: [{ name: q, in: query, required: true, schema: { type: string } }]
+      responses: { '200': { description: Cross-domain search results } }
+  /analytics/events:
+    post:
+      security: []
+      responses: { '201': { description: Event recorded } }
+components:
+  securitySchemes:
+    sanctum:
+      type: http
+      scheme: bearer
+      bearerFormat: token
+  parameters:
+    LanguageId:
+      name: language
+      in: path
+      required: true
+      schema: { type: string }
+    ContributionId:
+      name: contribution
+      in: path
+      required: true
+      schema: { type: string }

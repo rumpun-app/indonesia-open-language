@@ -2,6 +2,8 @@
 
 The public API is rooted at `/api/v1`.
 
+Machine-readable OpenAPI 3.1 documentation is available in [openapi.yaml](openapi.yaml).
+
 Current endpoints:
 
 ```text
