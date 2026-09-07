@@ -35,6 +35,7 @@ GET  /scripts/{script}
 GET  /moderation/reports          moderation.manage permission
 POST /moderation/reports/{id}/resolve
 GET  /admin/statistics            moderation.manage permission
+GET  /admin/audit-logs            moderation.manage permission
 ```
 
 Collection endpoints use Laravel pagination. Write endpoints validate input through Form Requests and use Sanctum authentication where indicated.

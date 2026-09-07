@@ -8,6 +8,7 @@ use App\Http\Requests\SubmitContributionRequest;
 use App\Models\Contribution;
 use App\Http\Requests\PublishContributionRequest;
 use App\Services\PublishContribution;
+use App\Services\AuditLogger;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -24,9 +25,9 @@ class ContributionController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreContributionRequest $request): JsonResponse
+    public function store(StoreContributionRequest $request, AuditLogger $audit): JsonResponse
     {
-        $contribution = Contribution::create($request->validated() + ['author_id' => $request->user()->id]);
+        $contribution = Contribution::create($request->validated() + ['author_id' => $request->user()->id]); $audit->record($request, 'contribution.created', $contribution);
         return response()->json($contribution, 201);
     }
 
@@ -54,15 +55,16 @@ class ContributionController extends Controller
         //
     }
 
-    public function submit(SubmitContributionRequest $request, Contribution $contribution): JsonResponse
+    public function submit(SubmitContributionRequest $request, Contribution $contribution, AuditLogger $audit): JsonResponse
     {
         abort_unless($contribution->author_id === $request->user()->id && $contribution->status === 'draft', 403);
         $contribution->update(['status' => 'submitted', 'submitted_at' => now()]);
+        $audit->record($request, 'contribution.submitted', $contribution);
         return response()->json($contribution->fresh());
     }
 
-    public function publish(PublishContributionRequest $request, Contribution $contribution, PublishContribution $publisher): JsonResponse
+    public function publish(PublishContributionRequest $request, Contribution $contribution, PublishContribution $publisher, AuditLogger $audit): JsonResponse
     {
-        return response()->json($publisher->execute($contribution, $request->user()->id));
+        $published = $publisher->execute($contribution, $request->user()->id); $audit->record($request, 'contribution.published', $published); return response()->json($published);
     }
 }

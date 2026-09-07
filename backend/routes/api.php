@@ -17,6 +17,7 @@ use App\Http\Controllers\Api\V1\AnalyticsController;
 use App\Http\Controllers\Api\V1\SearchController;
 use App\Http\Controllers\Api\V1\StatisticsController;
 use App\Http\Controllers\Api\V1\LinguisticsController;
+use App\Http\Controllers\Api\V1\AuditLogController;
 
 Route::prefix('v1')->middleware('throttle:api')->group(function () {
     Route::apiResource('languages', LanguageController::class)->only(['index', 'show']);
@@ -54,6 +55,7 @@ Route::prefix('v1')->middleware('throttle:api')->group(function () {
         Route::post('community/reports', [CommunityController::class, 'report']);
         Route::get('moderation/reports', [CommunityController::class, 'reports']);
         Route::get('admin/statistics', [StatisticsController::class, 'admin']);
+        Route::get('admin/audit-logs', [AuditLogController::class, 'index']);
         Route::post('moderation/reports/{report}/resolve', [CommunityController::class, 'resolveReport']);
         Route::get('me/progress', [LearningController::class, 'myProgress']);
         Route::post('me/progress', [LearningController::class, 'progress']);
