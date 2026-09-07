@@ -16,4 +16,6 @@ class Language extends Model
     protected function casts(): array { return ['metadata' => 'array']; }
     public function dialects() { return $this->hasMany(Dialect::class); }
     public function regions() { return $this->belongsToMany(Region::class); }
+    public function scripts() { return $this->belongsToMany(Script::class); }
+    public function grammarRules() { return $this->hasMany(GrammarRule::class); }
 }

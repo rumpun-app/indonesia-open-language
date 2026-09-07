@@ -29,6 +29,9 @@ POST /analytics/events
 GET  /me/reputation               authenticated
 GET  /search?q={term}
 GET  /languages/{language}/statistics
+GET  /languages/{language}/scripts
+GET  /languages/{language}/grammar
+GET  /scripts/{script}
 GET  /moderation/reports          moderation.manage permission
 POST /moderation/reports/{id}/resolve
 GET  /admin/statistics            moderation.manage permission

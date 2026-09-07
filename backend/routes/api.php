@@ -16,6 +16,7 @@ use App\Http\Controllers\Api\V1\LearningController;
 use App\Http\Controllers\Api\V1\AnalyticsController;
 use App\Http\Controllers\Api\V1\SearchController;
 use App\Http\Controllers\Api\V1\StatisticsController;
+use App\Http\Controllers\Api\V1\LinguisticsController;
 
 Route::prefix('v1')->group(function () {
     Route::apiResource('languages', LanguageController::class)->only(['index', 'show']);
@@ -35,6 +36,9 @@ Route::prefix('v1')->group(function () {
     Route::post('analytics/events', [AnalyticsController::class, 'store']);
     Route::get('search', SearchController::class);
     Route::get('languages/{language}/statistics', [StatisticsController::class, 'language']);
+    Route::get('languages/{language}/scripts', [LinguisticsController::class, 'scripts']);
+    Route::get('languages/{language}/grammar', [LinguisticsController::class, 'grammar']);
+    Route::get('scripts/{script}', [LinguisticsController::class, 'script']);
     Route::middleware('auth:sanctum')->group(function () {
         Route::post('languages', [LanguageController::class, 'store']);
         Route::post('dialects', [DialectController::class, 'store']);
