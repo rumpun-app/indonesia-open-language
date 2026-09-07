@@ -1,0 +1,19 @@
+# API v1
+
+The public API is rooted at `/api/v1`.
+
+Current endpoints:
+
+```text
+GET  /languages
+GET  /languages/{language}
+GET  /languages/{language}/dialects
+POST /languages                 authenticated
+POST /dialects                  authenticated
+GET  /contributions
+GET  /contributions/{contribution}
+POST /contributions              contribution.create permission
+POST /contributions/{id}/submit  contribution.submit permission
+```
+
+Collection endpoints use Laravel pagination. Write endpoints validate input through Form Requests and use Sanctum authentication where indicated.
