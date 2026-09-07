@@ -20,6 +20,8 @@ POST /contributions              contribution.create permission
 POST /contributions/{id}/submit  contribution.submit permission
 GET  /sources
 POST /sources                    contribution.create permission
+GET  /audio
+POST /audio                      audio.upload permission; requires speaker consent
 ```
 
 Collection endpoints use Laravel pagination. Write endpoints validate input through Form Requests and use Sanctum authentication where indicated.

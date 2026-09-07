@@ -5,3 +5,5 @@ Contributions are proposals, not canonical language data. A contributor creates 
 The next validation states are `under_review`, `community_verified`, `expert_verified`, and `published`. Rejected proposals remain in history. Publishing must create an immutable entity version and preserve the author, reviewer, source, evidence, and reason for change.
 
 AI-generated suggestions must enter this same workflow and must never be published automatically.
+
+Audio contributions require an approved speaker consent record and an explicit media license. Uploaded files are stored in S3-compatible storage, marked `processing`, and dispatched to a queue before entering audio review.
