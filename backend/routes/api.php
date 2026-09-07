@@ -18,7 +18,7 @@ use App\Http\Controllers\Api\V1\SearchController;
 use App\Http\Controllers\Api\V1\StatisticsController;
 use App\Http\Controllers\Api\V1\LinguisticsController;
 
-Route::prefix('v1')->group(function () {
+Route::prefix('v1')->middleware('throttle:api')->group(function () {
     Route::apiResource('languages', LanguageController::class)->only(['index', 'show']);
     Route::get('languages/{language}/dialects', [DialectController::class, 'index']);
     Route::get('contributions', [ContributionController::class, 'index']);
@@ -32,7 +32,7 @@ Route::prefix('v1')->group(function () {
     Route::get('dictionary', [DictionaryController::class, 'index']);
     Route::get('dictionary/{lexicalEntry}', [DictionaryController::class, 'show']);
     Route::get('exports/languages', ExportController::class);
-    Route::post('ai/query', AiController::class);
+    Route::post('ai/query', AiController::class)->middleware('throttle:ai');
     Route::post('analytics/events', [AnalyticsController::class, 'store']);
     Route::get('search', SearchController::class);
     Route::get('languages/{language}/statistics', [StatisticsController::class, 'language']);
