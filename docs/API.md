@@ -38,6 +38,9 @@ GET  /moderation/reports          moderation.manage permission
 POST /moderation/reports/{id}/resolve
 GET  /admin/statistics            moderation.manage permission
 GET  /admin/audit-logs            moderation.manage permission
+GET  /tokens                      authenticated
+POST /tokens                      authenticated; creates scoped Sanctum token
+DELETE /tokens/{token}             authenticated token owner
 GET  /exports/languages?format=json|jsonl|csv
 ```
 
