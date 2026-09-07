@@ -1,22 +1,15 @@
+const query = (params = {}) => { const entries = Object.entries(params).filter(([, value]) => value !== undefined && value !== null); return entries.length ? `?${new URLSearchParams(Object.fromEntries(entries.map(([k, v]) => [k, String(v)])))}` : ''; };
+export class ApiError extends Error { constructor(message, status, body) { super(message); this.name = 'ApiError'; this.status = status; this.body = body; } }
 export class IndonesiaOpenLanguage {
-  constructor({ baseUrl, token, fetchImpl = globalThis.fetch }) {
-    if (!baseUrl) throw new Error('baseUrl is required');
-    this.baseUrl = baseUrl.replace(/\/$/, '');
-    this.token = token;
-    this.fetch = fetchImpl;
-  }
-
-  async request(path, options = {}) {
-    const headers = { Accept: 'application/json', ...(options.body ? { 'Content-Type': 'application/json' } : {}), ...(this.token ? { Authorization: `Bearer ${this.token}` } : {}), ...options.headers };
-    const response = await this.fetch(`${this.baseUrl}${path}`, { ...options, headers });
-    const body = response.status === 204 ? null : await response.json();
-    if (!response.ok) throw Object.assign(new Error(body?.message || `API request failed (${response.status})`), { status: response.status, body });
-    return body;
-  }
-
-  languages = { list: () => this.request('/languages'), get: (id) => this.request(`/languages/${id}`), statistics: (id) => this.request(`/languages/${id}/statistics`) };
-  dictionary = { search: (q, params = {}) => this.request(`/dictionary?${new URLSearchParams({ q, ...params })}`), get: (id) => this.request(`/dictionary/${id}`) };
-  contributions = { list: () => this.request('/contributions'), create: (payload) => this.request('/contributions', { method: 'POST', body: JSON.stringify(payload) }), submit: (id) => this.request(`/contributions/${id}/submit`, { method: 'POST' }) };
-  learning = { courses: () => this.request('/courses'), progress: () => this.request('/me/progress'), recordProgress: (payload) => this.request('/me/progress', { method: 'POST', body: JSON.stringify(payload) }) };
-  search = (q) => this.request(`/search?${new URLSearchParams({ q })}`);
+  constructor({ baseUrl, token, fetchImpl = globalThis.fetch, retries = 2 }) { if (!baseUrl) throw new Error('baseUrl is required'); if (typeof fetchImpl !== 'function') throw new Error('fetchImpl must be a function'); this.baseUrl=baseUrl.replace(/\/$/,''); this.token=token; this.fetch=fetchImpl; this.retries=retries; }
+  async request(path, options = {}) { const headers={Accept:'application/json',...(options.body && !(options.body instanceof FormData)?{'Content-Type':'application/json'}:{}),...(this.token?{Authorization:`Bearer ${this.token}`}:{}) ,...options.headers}; let attempt=0; while(true){try{const response=await this.fetch(`${this.baseUrl}${path}`,{...options,headers}); const body=response.status===204?null:await response.json(); if(!response.ok) throw new ApiError(body?.message||`API request failed (${response.status})`,response.status,body); return body;}catch(error){if(attempt++>=this.retries||(error instanceof ApiError&&error.status<500))throw error;}} }
+  get(path, params){return this.request(path+query(params));} post(path,body){return this.request(path,{method:'POST',body:body instanceof FormData?body:JSON.stringify(body)});} del(path){return this.request(path,{method:'DELETE'});}
+  languages={list:(p)=>this.get('/languages',p),get:(id)=>this.get(`/languages/${id}`),dialects:(id)=>this.get(`/languages/${id}/dialects`),scripts:(id)=>this.get(`/languages/${id}/scripts`),grammar:(id)=>this.get(`/languages/${id}/grammar`),statistics:(id)=>this.get(`/languages/${id}/statistics`)};
+  dictionary={search:(q,p={})=>this.get('/dictionary',{...p,q}),get:(id)=>this.get(`/dictionary/${id}`),create:(p)=>this.post('/dictionary',p)};
+  contributions={list:(p)=>this.get('/contributions',p),get:(id)=>this.get(`/contributions/${id}`),create:(p)=>this.post('/contributions',p),submit:(id)=>this.post(`/contributions/${id}/submit`),publish:(id)=>this.post(`/contributions/${id}/publish`)};
+  reviews={list:(p)=>this.get('/reviews',p),create:(p)=>this.post('/reviews',p)}; sources={list:(p)=>this.get('/sources',p),create:(p)=>this.post('/sources',p)};
+  courses={list:(p)=>this.get('/courses',p),get:(id)=>this.get(`/courses/${id}`)}; learning={progress:()=>this.get('/me/progress'),recordProgress:(p)=>this.post('/me/progress',p)};
+  community={posts:(p)=>this.get('/community/posts',p),createPost:(p)=>this.post('/community/posts',p),comment:(id,p)=>this.post(`/community/posts/${id}/comments`,p),report:(p)=>this.post('/community/reports',p)};
+  audio={list:(p)=>this.get('/audio',p),upload:(f)=>this.post('/audio',f)}; moderation={reports:(p)=>this.get('/moderation/reports',p),resolveReport:(id,p)=>this.post(`/moderation/reports/${id}/resolve`,p)};
+  analytics={track:(p)=>this.post('/analytics/events',p)}; tokens={list:()=>this.get('/tokens'),create:(p)=>this.post('/tokens',p),revoke:(id)=>this.del(`/tokens/${id}`)}; exports={languages:(format='json')=>this.get('/exports/languages',{format})}; search=(q)=>this.get('/search',{q}); ai={query:(q)=>this.post('/ai/query',{query:q})}; reputation=()=>this.get('/me/reputation'); admin={statistics:()=>this.get('/admin/statistics'),auditLogs:(p)=>this.get('/admin/audit-logs',p)};
 }
