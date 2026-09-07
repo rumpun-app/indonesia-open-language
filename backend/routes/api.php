@@ -15,6 +15,7 @@ use App\Http\Controllers\Api\V1\CommunityController;
 use App\Http\Controllers\Api\V1\LearningController;
 use App\Http\Controllers\Api\V1\AnalyticsController;
 use App\Http\Controllers\Api\V1\SearchController;
+use App\Http\Controllers\Api\V1\StatisticsController;
 
 Route::prefix('v1')->group(function () {
     Route::apiResource('languages', LanguageController::class)->only(['index', 'show']);
@@ -33,6 +34,7 @@ Route::prefix('v1')->group(function () {
     Route::post('ai/query', AiController::class);
     Route::post('analytics/events', [AnalyticsController::class, 'store']);
     Route::get('search', SearchController::class);
+    Route::get('languages/{language}/statistics', [StatisticsController::class, 'language']);
     Route::middleware('auth:sanctum')->group(function () {
         Route::post('languages', [LanguageController::class, 'store']);
         Route::post('dialects', [DialectController::class, 'store']);
@@ -47,6 +49,7 @@ Route::prefix('v1')->group(function () {
         Route::post('community/posts/{post}/comments', [CommunityController::class, 'comment']);
         Route::post('community/reports', [CommunityController::class, 'report']);
         Route::get('moderation/reports', [CommunityController::class, 'reports']);
+        Route::get('admin/statistics', [StatisticsController::class, 'admin']);
         Route::post('moderation/reports/{report}/resolve', [CommunityController::class, 'resolveReport']);
         Route::get('me/progress', [LearningController::class, 'myProgress']);
         Route::post('me/progress', [LearningController::class, 'progress']);
