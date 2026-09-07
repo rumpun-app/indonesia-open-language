@@ -1,0 +1,10 @@
+{
+  "name": "@iol/web",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "license": "AGPL-3.0-only",
+  "scripts": { "dev": "vite", "build": "vite build" },
+  "dependencies": { "@iol/typescript-sdk": "file:../packages/typescript-sdk" },
+  "devDependencies": { "vite": "^6.0.0" }
+}
