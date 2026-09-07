@@ -13,6 +13,7 @@ use App\Http\Controllers\Api\V1\SourceController;
 use App\Http\Controllers\Api\V1\AudioController;
 use App\Http\Controllers\Api\V1\CommunityController;
 use App\Http\Controllers\Api\V1\LearningController;
+use App\Http\Controllers\Api\V1\AnalyticsController;
 
 Route::prefix('v1')->group(function () {
     Route::apiResource('languages', LanguageController::class)->only(['index', 'show']);
@@ -29,6 +30,7 @@ Route::prefix('v1')->group(function () {
     Route::get('dictionary/{lexicalEntry}', [DictionaryController::class, 'show']);
     Route::get('exports/languages', ExportController::class);
     Route::post('ai/query', AiController::class);
+    Route::post('analytics/events', [AnalyticsController::class, 'store']);
     Route::middleware('auth:sanctum')->group(function () {
         Route::post('languages', [LanguageController::class, 'store']);
         Route::post('dialects', [DialectController::class, 'store']);
@@ -44,5 +46,6 @@ Route::prefix('v1')->group(function () {
         Route::post('community/reports', [CommunityController::class, 'report']);
         Route::get('me/progress', [LearningController::class, 'myProgress']);
         Route::post('me/progress', [LearningController::class, 'progress']);
+        Route::get('me/reputation', [AnalyticsController::class, 'reputation']);
     });
 });

@@ -25,6 +25,8 @@ POST /audio                      audio.upload permission; requires speaker conse
 GET  /courses/{course}
 GET  /me/progress                 authenticated
 POST /me/progress                 authenticated
+POST /analytics/events
+GET  /me/reputation               authenticated
 ```
 
 Collection endpoints use Laravel pagination. Write endpoints validate input through Form Requests and use Sanctum authentication where indicated.
